@@ -1,0 +1,59 @@
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+var _a;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.UserService = void 0;
+const zod_1 = __importDefault(require("zod"));
+const user_schemas_1 = require("../libs/schemas/user.schemas");
+const user_model_1 = __importDefault(require("../models/user.model"));
+class UserService {
+}
+exports.UserService = UserService;
+_a = UserService;
+UserService.register = (data) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const validated = user_schemas_1.userSchema.parse(data);
+        const existingUser = yield user_model_1.default.findOne({ email: validated.email });
+        if (existingUser) {
+            return {
+                success: false,
+                error: "User with this email already exists"
+            };
+        }
+        const user = new user_model_1.default(validated);
+        yield user.save();
+        return {
+            success: true,
+            message: "User registered successfully",
+            user: {
+                id: user._id,
+                name: user.name,
+                lastname: user.lastname,
+                email: user.email
+            }
+        };
+    }
+    catch (err) {
+        if (err instanceof zod_1.default.ZodError) {
+            return {
+                success: false,
+                error: err.message
+            };
+        }
+        return {
+            success: false,
+            error: "Registration failed"
+        };
+    }
+});

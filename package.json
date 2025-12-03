@@ -1,13 +1,47 @@
 {
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "concurrently": "^9.1.2",
+    "copyfiles": "^2.4.1",
+    "nodemon": "^3.1.11",
+    "prettier": "^3.4.2",
+    "rimraf": "^6.0.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.2"
+  },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
+    "body-parser": "^2.2.1",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
-    "mongodb": "^7.0.0",
     "mongoose": "^9.0.0",
-    "nodemon": "^3.1.11",
     "openai": "^6.9.1",
     "zod": "^4.1.13"
-  }
+  },
+  "name": "oussama-ai-agent-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "clean": "rimraf dist",
+    "copy:prompts": "copyfiles --up 1 \"src/libs/ai/prompts/**/*.md\" dist",
+    "dev": "concurrently \"npm run copy:prompts -- --watch\" \"npx tsc --watch\" \"nodemon -q dist/index.js\"",
+    "format": "prettier --write src",
+    "build": "npm run clean && npx tsc && npm run copy:prompts",
+    "start": "npm run build && node dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ramzykemmoun/oussama-ai-agent-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/ramzykemmoun/oussama-ai-agent-backend/issues"
+  },
+  "homepage": "https://github.com/ramzykemmoun/oussama-ai-agent-backend#readme"
 }
