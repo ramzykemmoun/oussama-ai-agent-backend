@@ -34,15 +34,3 @@ app.use('/api/chat', chatRouter);
 
 connectDB()
 startApp(app)
-
-
-/***** ROUTES *****/
-
-app.use('/api/user', userRouter);
-app.use('/api/chat', chatRouter);
-
-
-/***** CONFIG *****/
-
-connectDB()
-startApp(app)
